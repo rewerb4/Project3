@@ -1,0 +1,16 @@
+body {
+    background-color: red;
+    margin: 0 auto;
+}
+
+h3 {
+    text-align:center;
+    color: black;
+
+}
+
+
+p {
+    font-family: "Times New Roman";
+    font-size: 20px;
+}
