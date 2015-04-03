@@ -25,8 +25,17 @@ class SqLite implements IAuthentication
      */
     public function authenticate($username, $password)
     {
+
         // TODO: Implement authenticate() method.
             //open database
+       /* $username = $_GET['username'];
+        $password = $_GET['password'];
+
+        // Escape User Input to help prevent SQL Injection
+        $username = mysql_real_escape_string($username);
+        $password = mysql_real_escape_string($password);
+        */
+
         $db = new PDO('sqlite:../src/Common/Authentication/Users_PDO');
     /*
         if(!$db)
@@ -57,11 +66,13 @@ class SqLite implements IAuthentication
 
         if ($numRows == 1)
         {
-            echo "authorized with SQLite3 Welcome- ".$username;
+            //echo "authorized with SQLite3 Welcome- ".$username;
+            return 1;
         }
         else
         {
-            echo "not authorized";
+           // echo "not authorized";
+            return 0;
         }
         //close database
         $db = NULL;
