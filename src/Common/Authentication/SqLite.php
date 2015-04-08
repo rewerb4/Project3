@@ -1,10 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Owner
- * Date: 3/17/2015
- * Time: 8:26 PM
- */
+* Created by PhpStorm.
+* User: Owner
+* Date: 3/17/2015
+* Time: 8:26 PM
+*/
 
 namespace Common\Authentication;
 
@@ -26,25 +26,21 @@ class SqLite implements IAuthentication
     public function authenticate($username, $password)
     {
 
-        // TODO: Implement authenticate() method.
-            //open database
-       /* $username = $_GET['username'];
-        $password = $_GET['password'];
+// TODO: Implement authenticate() method.
+//open database
 
-        // Escape User Input to help prevent SQL Injection
-        $username = mysql_real_escape_string($username);
-        $password = mysql_real_escape_string($password);
-        */
 
         $db = new PDO('sqlite:../src/Common/Authentication/Users_PDO');
-    /*
+
+
         if(!$db)
         {
-            echo $db->lastErrorMsg();
+        return 1;
         }
+        /*
         else
         {
-            echo "Opened database successfully\n";
+        echo "Opened database successfully\n";
         }
 
         $db->exec("CREATE TABLE user (Id INTEGER PRIMARY KEY, username VARCHAR, password VARCHAR)");
@@ -53,30 +49,60 @@ class SqLite implements IAuthentication
         $ret = $db->exec("INSERT INTO user (username,password) VALUES ('mat', 'hi');"."INSERT INTO user (username,password) VALUES ('john', 'hello');" );
         if (!$ret)
         {
-            echo $db->lastErrorMsg();
+        echo $db->lastErrorMsg();
         }
         else
         {
-            echo "Records created successfully\n";
+        echo "Records created successfully\n";
         }
-       */
+        */
 
         $rows = $db->query("SELECT count(*) as count FROM user WHERE username = '$username' AND password= '$password'");
         $numRows = $rows->fetchColumn();
 
-        if ($numRows == 1)
-        {
-            //echo "authorized with SQLite3 Welcome- ".$username;
+        if ($numRows == 1) {
+
             return 1;
-        }
-        else
-        {
-           // echo "not authorized";
+        } else {
+
             return 0;
         }
-        //close database
+//close database
         $db = NULL;
 
     }
 
+    public function create($username, $password)
+    {
+
+        if ($username == '')
+        {
+            return 1;
+        }
+        if ($password == '')
+        {
+            return 1;
+        }
+        else
+        {
+
+            $db = new PDO('sqlite:../src/Common/Authentication/Users_PDO');
+
+            $rows = $db->query("SELECT count(*) as count FROM user WHERE username = '$username' AND password= '$password'");
+            $numRows = $rows->fetchColumn();
+
+            if ($numRows == 1)
+            {
+                echo "username and password already used";
+                return 1;
+            }
+            else
+            {
+                $db->exec("INSERT INTO user (username,password) VALUES ('$username', '$password');");
+                echo json_encode(array('success' => true, 'message' => 'Account created.'));
+                return 0;
+
+            }
+        }
+    }
 }
