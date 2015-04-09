@@ -5,17 +5,42 @@ $app = new \Slim\Slim();
 
 $app->get('/', function()
 {
-    require_once '../src/views/LoginHtml.html';
-    //$startPrompt = new \views\LoginForm();
-    //$startPrompt->show();
+    require_once '../src/views/login.html';
+
 });
 
-$app->post('/auth', function()
+$app->get('/register', function()
 {
-    new \views\Verify();
+    require_once'../src/views/Register.html';
 });
 
-$app->post('/api/auth', function() use ($app)
+$app->get('/profile', function()
+{
+    require_once'../src/views/profile.html';
+});
+
+$app->post('/newUser', function () use ($app)
+{
+    $try = new \Common\Authentication\SqLite();
+    $x = $try->create($_POST['username'],$_POST['password']);
+
+    if ($x === 1)
+    {
+        echo $app->response()->setStatus(404);
+        echo $app->response()->getStatus();
+        //return json_encode($app->response->header("Profile:Http:localhost:8080/profile/".$_POST[username],200));
+
+    }
+
+    else
+    {
+
+        echo $app->response()->setStatus(200);
+        echo $app->response()->getStatus();
+    }
+});
+
+$app->post('/auth', function() use ($app)
 {
 
     $try = new \Common\Authentication\SqLite();
@@ -25,6 +50,7 @@ $app->post('/api/auth', function() use ($app)
     {
         echo $app->response()->setStatus(200);
         echo $app->response()->getStatus();
+        //return json_encode($app->response->header("Profile:Http:localhost:8080/profile/".$_POST[username],200));
 
     }
 

@@ -1,33 +1,66 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-    <meta charset="utf-8">
-    <title>JavaScript registration form</title>
-    <link rel='stylesheet' href='regForm.css' type='text/css' />
-    <script src="registration-form-validation.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New User Form</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<body onload="document.registration.userid.focus();">
-<h1>Registration Form</h1>
-<p>Use tab keys to move from one input field to the next.</p>
-<form name='registration' onSubmit="return formValidation();">
-    <ul>
-        <li><label for="userid">User id:</label></li>
-        <li><input type="text" name="userid" size="12" /></li>
-        <li><label for="passid">Password:</label></li>
-        <li><input type="password" name="passid" size="12" /></li>
-        <li><label for="username">Name:</label></li>
-        <li><input type="text" name="username" size="50" /></li>
-        <li><label for="address">Address:</label></li>
-        <li><input type="text" name="address" size="50" /></li>
-        <li><label for="city">City:</label></li>
-        <li><input type="text" name="city"/></li>
-        <li><label for="state">State:</label></li>
-        <li><input type="text" name="state"/></li>
-        <li><label for="zip">ZIP Code:</label></li>
-        <li><input type="text" name="zip" /></li>
-        <li><label for="email">Email:</label></li>
-        <li><input type="text" name="email" size="50" /></li>
-        <li><input type="submit" name="submit" value="Submit" /></li>
-    </ul>
-</form>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type= "text/javascript">
+        $(document).ready(function() {
+
+            $('#submitBtn').click(function() {
+
+                if ($('#password').val() == $('#passwordRetype').val())
+                {
+                    var username=$("#username").val();
+                    var password=$("#password").val();
+                    var dataString = 'username='+username+'&password='+password;
+                    $.ajax({
+                        url: "/newUser",
+                        type: "POST",
+                        data: dataString,
+                       // dataType: 'json',
+                        cache: false,
+
+                        statusCode: {
+                            404: function() {
+                                alert( "invalid" );
+
+                            },
+                            200: function() {
+                                alert( "successful login create" );
+                                location.href = "/";
+                                //redirect to login.html
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+
+<div id="main">
+    <h1>Welcome to CS4350</h1>
+    <div id="login">
+        <h2>Create a New User</h2>
+        <div id="userForm">
+            <label>UserName :</label>
+            <input id="username" name="name" type="text"><br /><br />
+            <label>Password :</label>
+            <input id="password" name="password" type="password"><br /><br />
+            <label>Retype Password :</label>
+            <input id="passwordRetype" name="passwordRetype" type="password"><br /><br />
+            <p><input type="button" id="submitBtn" value="submitBtn" ></p>
+            <div>return to login <a href="/">here</a>.</div><br /><br />
+
+         </div>
+    </div>
+</div>
 </body>
 </html>
